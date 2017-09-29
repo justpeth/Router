@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <script src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script src="../router.js"></script>
+    
+    <style>
+        a{margin:0 10px;font-size:16px;color:#333;}
+        .cotent{margin:20px; height:200px;width:400px;border:1px solid #ccc;border-radius: 5px;}
+    </style>
+
+</head>
+<body>
+    <a href="#/a">view1</a><a href="#/b">view2</a><a href="#/a/1/4">view1-1</a>
+    <div class="cotent">
+    </div>
+<script>
+    var $con = $(".cotent");
+    Router.path("#/a").done(function(){
+        $con.css("background","#eee");
+        $.ajax({
+            url: './view/view1.html',
+            success: function (data){
+                $con.html(data);
+            }
+        });
+    });
+    Router.path("#/a/:id/:ids").done(function () {
+        var id = this.params.id;
+        var ids = this.params.ids;
+        $con.css("background","#fff");
+        $.ajax({
+            url: './view/view3.html',
+            success: function (data){
+                $con.html(data);
+                $(".h1").append(" id="+ id + '   ids=' + ids);
+            }
+        }); 
+
+    });
+    Router.path("#/b").done(function () {
+        alert("b");
+        $con.css("background","#71c5ff");
+    });
+    Router.root("#/b");
+    Router.rescue(function(){
+        alert("not found");
+    });
+    Router.init();
+</script>
+</body>
+</html>
